@@ -25,7 +25,7 @@ local Ui = {
         ["Desktop"] = UDim2.fromOffset(600, 400),
     },
     BaseConfig = {
-        Theme = "DarkTheme",
+		Theme = "SigmaSpy",
         NoScroll = true,
     },
     OptionTypes = {
@@ -216,6 +216,7 @@ function Ui:LoadReGui()
     
     if Config and Config.ThemeConfig then
         Config.ThemeConfig.TextFont = TextFont
+		ReGui:DefineTheme("SigmaSpy", Config.ThemeConfig)
     end
 end
 
@@ -254,6 +255,10 @@ function Ui:CreateWindow(WindowConfig)
     Process:Merge(Config, WindowConfig)
 
     local Window = ReGui:Window(Config)
+
+    if not FontSuccess then 
+		Window:SetTheme("SigmaSpy")
+    end
     
     return Window
 end
