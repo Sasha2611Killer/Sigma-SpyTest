@@ -214,9 +214,30 @@ end
 function Ui:LoadReGui()
     if not ReGui then return end
     
+    -- Проверяем наличие ThemeConfig
     if Config and Config.ThemeConfig then
+        -- Убедимся, что ThemeConfig содержит необходимые значения
+        if type(Config.ThemeConfig) ~= "table" then
+            Config.ThemeConfig = {}
+        end
+        
         Config.ThemeConfig.TextFont = TextFont
-		ReGui:DefineTheme("SigmaSpy", Config.ThemeConfig)
+        
+        -- Определяем тему с базовыми значениями по умолчанию
+        ReGui:DefineTheme("SigmaSpy", Config.ThemeConfig)
+    else
+        -- Если ThemeConfig не существует, создаем базовую тему
+        local defaultTheme = {
+            Values = {
+                TextFont = TextFont,
+                Text = Color3.fromRGB(255, 255, 255),
+                TextDisabled = Color3.fromRGB(128, 128, 128),
+                WindowBg = Color3.fromRGB(15, 15, 15),
+                Border = Color3.fromRGB(60, 60, 60),
+                -- Добавьте другие необходимые цвета...
+            }
+        }
+        ReGui:DefineTheme("SigmaSpy", defaultTheme)
     end
 end
 
@@ -303,16 +324,27 @@ function Ui:CreateMainWindow()
     end
     
     self.Window = Window
-
+    
+    -- Устанавливаем тему "SigmaSpy" (или другую доступную)
+    local success, err = pcall(function()
+        Window:SetTheme("SigmaSpy")
+    end)
+    
+    if not success then
+        print("SigmaSpy theme not available, using default theme:", err)
+        -- Попробуем использовать другую тему
+        Window:SetTheme("DarkTheme")  -- или "LightTheme"
+    end
+    
     self:FontWasSuccessful()
     self:AuraCounterService()
-
+    
     if Flags and Flags.SetFlagCallback then
         Flags:SetFlagCallback("UiVisible", function(self, Visible)
             Window:SetVisible(Visible)
         end)
     end
-
+    
     return Window
 end
 
