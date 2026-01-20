@@ -403,12 +403,12 @@ end
 
 function Hook:LoadReceiveHooks()
 	local NoReceiveHooking = Config.NoReceiveHooking
-	local BlackListedServices = Config.BlackListedServices
+	local BlackListedServices = Config.BlackListedServices or {} -- Добавляем значение по умолчанию
 
 	if NoReceiveHooking then return end
 
 	--// Remote added
-	game.DescendantAdded:Connect(function(Remote) -- TODO
+	game.DescendantAdded:Connect(function(Remote)
 		self:ConnectClientRecive(Remote)
 	end)
 
@@ -417,7 +417,9 @@ function Hook:LoadReceiveHooks()
 
 	--// Search for remotes
 	for _, Service in next, game:GetChildren() do
-		if table.find(BlackListedServices, Service.ClassName) then continue end
+		if BlackListedServices and table.find(BlackListedServices, Service.ClassName) then 
+			continue 
+		end
 		self:MultiConnect(Service:GetDescendants())
 	end
 end
