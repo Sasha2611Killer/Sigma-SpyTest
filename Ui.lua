@@ -216,7 +216,7 @@ function Ui:LoadReGui()
     
     if Config and Config.ThemeConfig then
         Config.ThemeConfig.TextFont = TextFont
-        ReGui:DefineTheme("SigmaSpy", Config.ThemeConfig)
+        ReGui:DefineTheme("Syntax", Config.ThemeConfig)
     end
 end
 
