@@ -98,6 +98,8 @@ function Ui:Init(Data)
         return
     end
     
+    print("[Sigma Spy] Initializing UI...")
+    
     local Modules = Data.Modules
     if not Modules then
         warn("Ui:Init: Modules not found in Data")
@@ -124,14 +126,17 @@ function Ui:Init(Data)
         repoUrl = Data.Configuration.RepoUrl
     end
     
-    print("Loading ReGui from:", repoUrl)
+    print("[Sigma Spy] Loading ReGui from:", repoUrl)
     
     --// Try multiple sources for ReGui
     local reGuiSources = {
         repoUrl .. "/Regui.lua",
+        "https://raw.githubusercontent.com/Sasha2611Killer/Sigma-SpyTest/main/Regui.lua",
+        "https://raw.githubusercontent.com/depthso/Dear-ReGui/main/Regui.lua"
     }
     
-    for _, source in ipairs(reGuiSources) do
+    for i, source in ipairs(reGuiSources) do
+        print(string.format("[Sigma Spy] Trying source %d: %s", i, source))
         local success, result = pcall(function()
             local code = game:HttpGet(source, true)
             return loadstring(code, "ReGui")()
@@ -139,15 +144,20 @@ function Ui:Init(Data)
         
         if success then
             ReGui = result
-            print("ReGui loaded successfully from:", source)
+            print("[Sigma Spy] ReGui loaded successfully from:", source)
             break
         else
-            warn("Failed to load ReGui from", source, ":", result)
+            warn("[Sigma Spy] Failed to load ReGui from", source, ":", result)
         end
     end
     
     if not ReGui then
-        error("Could not load ReGui from any source")
+        error("[Sigma Spy] Could not load ReGui from any source")
+    end
+    
+    --// Check if CodeEditor is available
+    if not ReGui.CodeFrame then
+        warn("[Sigma Spy] CodeFrame module not found in ReGui!")
     end
     
     --// Initialize font
@@ -155,7 +165,7 @@ function Ui:Init(Data)
     self:LoadReGui()
     self:CheckScale()
     
-    print("Ui initialized successfully")
+    print("[Sigma Spy] Ui initialized successfully")
 end
 
 function Ui:SetCommChannel(NewCommChannel: BindableEvent)
