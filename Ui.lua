@@ -25,7 +25,7 @@ local Ui = {
         ["Desktop"] = UDim2.fromOffset(600, 400),
     },
     BaseConfig = {
-        Theme = "Syntax",
+        Theme = "DarkTheme",
         NoScroll = true,
     },
     OptionTypes = {
@@ -216,7 +216,7 @@ function Ui:LoadReGui()
     
     if Config and Config.ThemeConfig then
         Config.ThemeConfig.TextFont = TextFont
-        ReGui:DefineTheme("Syntax", Config.ThemeConfig)
+        ReGui:DefineTheme("DarkTheme", Config.ThemeConfig)
     end
 end
 
