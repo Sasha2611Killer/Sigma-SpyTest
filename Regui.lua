@@ -83,7 +83,7 @@ BackgroundTransparency=0.5 if w:CanScrollUp()then w:ScrollUp()w.Scrolled:Fire()
 end local H,I=(tick())I=h.InputEnded:Connect(function(J)if not n(J,'StartAndEnd'
 )then return end I:Disconnect()if t(y)and w:CanScrollUp()then y.
 BackgroundTransparency=0.8 else y.BackgroundTransparency=1 end D=false end)while
-D do task.wait() if tick()-H>=0.3 and w:CanScrollUp()then w:ScrollUp()w.Scrolled:Fire()end
+D do if tick()-H>=0.3 and w:CanScrollUp()then w:ScrollUp()w.Scrolled:Fire()end
 wait()end end)y.InputEnded:Connect(function(G)if n(G,'Movement')and not D then y
 .BackgroundTransparency=1 end end)z.InputBegan:Connect(function(G)if n(G,
 'Movement')and not D and w:CanScrollDown()then z.BackgroundTransparency=0.8 end
@@ -92,7 +92,7 @@ BackgroundTransparency=0.5 if w:CanScrollDown()then w:ScrollDown()w.Scrolled:
 Fire()end local H,I=(tick())I=h.InputEnded:Connect(function(J)if not n(J,
 'StartAndEnd')then return end I:Disconnect()if t(z)and w:CanScrollDown()then z.
 BackgroundTransparency=0.8 else z.BackgroundTransparency=1 end D=false end)while
-D do task.wait() if tick()-H>=0.3 and w:CanScrollDown()then w:ScrollDown()w.Scrolled:Fire()
+D do if tick()-H>=0.3 and w:CanScrollDown()then w:ScrollDown()w.Scrolled:Fire()
 end wait()end end)z.InputEnded:Connect(function(G)if n(G,'Movement')and not D
 then z.BackgroundTransparency=1 end end)B.InputBegan:Connect(function(G)if n(G,
 'Movement')and not E then B.BackgroundTransparency=0.2 B.BackgroundColor3=w.
@@ -114,7 +114,7 @@ VisibleSpace-1 if I==0 and l[H]<B.AbsolutePosition[H]then w:ScrollTo(w.Index-J)
 elseif I==1 and l[H]>=B.AbsolutePosition[H]+B.AbsoluteSize[H]then w:ScrollTo(w.
 Index+J)end end E=false F=true J()local K,L=(tick())L=h.InputEnded:Connect(
 function(M)if not n(M,'StartAndEnd')then return end L:Disconnect()F=false end)
-while F do task.wait() if tick()-K>=0.3 and t(A)then J()end wait()end end)x.
+while F do if tick()-K>=0.3 and t(A)then J()end wait()end end)x.
 MouseWheelForward:Connect(function()w:ScrollTo(w.Index-w.WheelIncrement)end)x.
 MouseWheelBackward:Connect(function()w:ScrollTo(w.Index+w.WheelIncrement)end)w.
 GuiElems.ScrollThumb=B w.GuiElems.ScrollThumbFrame=A w.GuiElems.Button1=y w.
@@ -256,7 +256,7 @@ ConnectEditBoxEvent=function(G)if G.EditBoxEvent then G.EditBoxEvent:Disconnect(
 )end G.EditBoxEvent=h.InputBegan:Connect(function(H)if H.UserInputType~=Enum.
 UserInputType.Keyboard then return end local I,J,K=Enum.KeyCode,H.KeyCode,
 function(I,J)local K,L K=h.InputEnded:Connect(function(M)if M.KeyCode~=I then
-return end K:Disconnect()L=true end)J()q.FastWait(0.5)while not L do task.wait() J()q.
+return end K:Disconnect()L=true end)J()q.FastWait(0.5)while not L do J()q.
 FastWait(0.03)end end if J==I.Down then K(I.Down,function()G.CursorX=G.
 FloatCursorX G.CursorY=G.CursorY+1 G:UpdateCursor()G:JumpToCursor()end)elseif J
 ==I.Up then K(I.Up,function()G.CursorX=G.FloatCursorX G.CursorY=G.CursorY-1 G:
@@ -326,19 +326,19 @@ N)and(U<=P+M)if W then local X,Y=(T-O),(U-P)J.Position=UDim2.new(0,S+X*math.
 ceil(G.FontSize/2)-1,0,Y*G.FontSize)J.Size=UDim2.new(0,1,0,G.FontSize+2)J.
 Visible=true G:CursorAnim(true)else J.Visible=false end end s.MapNewLines=
 function(G)local H,I,J,K,L={},1,G.Text,string.find,1 local M=K(J,'\n',L,true)
-while M do task.wait() H[I]=M I=I+1 L=M+1 M=K(J,'\n',L,true)end G.NewLines=H end s.
+while M do H[I]=M I=I+1 L=M+1 M=K(J,'\n',L,true)end G.NewLines=H end s.
 PreHighlight=function(G)local H=G.Text:gsub('\\\\','  ')local I,J,K,L,M,N=#H,{},
 {},{},string.find,string.sub G.ColoredLines={}local O=function(O,P,Q,R)local S,T
-=#J+1,1 local U,V,W=M(O,P,T,R)while U do task.wait() J[S]=U K[U]=Q if W then L[U]=W end S=S+
+=#J+1,1 local U,V,W=M(O,P,T,R)while U do J[S]=U K[U]=Q if W then L[U]=W end S=S+
 1 T=V+1 U,V,W=M(O,P,T,R)end end O(H,'"',1,true)O(H,"'",2,true)O(H,'%[(=*)%[',3)
 O(H,'--',4,true)table.sort(J)local P,Q,R,S,T=G.NewLines,0,0,0,{}for U=1,#J do
 local V=J[U]if V<=S then continue end local W,X=V,K[V]if X==1 then W=M(H,'"',V+1
-,true)while W and N(H,W-1,W-1)=='\\'do task.wait() W=M(H,'"',W+1,true)end if not W then W=I
-end elseif X==2 then W=M(H,"'",V+1,true)while W and N(H,W-1,W-1)=='\\'do task.wait() W=M(H,
+,true)while W and N(H,W-1,W-1)=='\\'do W=M(H,'"',W+1,true)end if not W then W=I
+end elseif X==2 then W=M(H,"'",V+1,true)while W and N(H,W-1,W-1)=='\\'do W=M(H,
 "'",W+1,true)end if not W then W=I end elseif X==3 then _,W=M(H,']'..L[V]..']',V
 +1,true)if not W then W=I end elseif X==4 then local Y=K[V+2]if Y==3 then _,W=M(
 H,']'..L[V+2]..']',V+1,true)if not W then W=I end else W=M(H,'\n',V+1,true)or I
-end end while V>R do task.wait() Q=Q+1 R=P[Q]or I+1 end while true do task.wait() local Y=T[Q]if not Y
+end end while V>R do Q=Q+1 R=P[Q]or I+1 end while true do local Y=T[Q]if not Y
 then Y={}T[Q]=Y end Y[V]={X,W}if W>R then Q=Q+1 R=P[Q]or I+1 else break end end
 S=W end G.PreHighlights=T end s.HighlightLine=function(G,H)local I=G.
 ColoredLines[H]if I then return I end local J,K,L,M,N,O,P,Q,R,S,T,U,V=string.sub
