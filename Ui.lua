@@ -216,7 +216,6 @@ function Ui:LoadReGui()
     
     if Config and Config.ThemeConfig then
         Config.ThemeConfig.TextFont = TextFont
-        ReGui:DefineTheme("DarkTheme", Config.ThemeConfig)
     end
 end
 
@@ -255,10 +254,6 @@ function Ui:CreateWindow(WindowConfig)
     Process:Merge(Config, WindowConfig)
 
     local Window = ReGui:Window(Config)
-
-    if not FontSuccess then 
-        Window:SetTheme("DarkTheme")
-    end
     
     return Window
 end
