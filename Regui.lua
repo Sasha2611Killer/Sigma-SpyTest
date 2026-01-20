@@ -1,5 +1,6 @@
---!nocheck
---!nolint
+-- real regui 1.4.7
+-- absolutely ALL credits go to depso brah UNDER MIT LICENSE!!! https://github.com/depthso
+-- depso if you read this im so flipping sorry man forgive me :cry:
 local a a={cache={},load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}
 end return a.cache[b].c end}do function a.a()local b,c,d='8.0',cloneref or
 function(b)return b end,{Theme={Syntax={Text=Color3.fromRGB(204,204,204),
@@ -889,7 +890,7 @@ MouseEnter={BackgroundTransparency=0.3},MouseLeave={BackgroundTransparency=0}},
 Init='MouseLeave'},Border={Connections={Selected={Transparency=0,Thickness=1},
 Deselected={Transparency=0.7,Thickness=1}},Init='Selected'}}return aa end end
 local aa,ab,ad,ae,af={Version='1.4.7',Author='Depso',License='MIT',Repository=
-'https://github.com/depthso/Dear-ReGui/',Debug=false,PrefabsId=71968920594655,
+'https://github.com/depthso/Dear-ReGui/',Debug=false,PrefabsId=102927178901478, -- original is 71968920594655, reuploaded incase it gets deleted
 DefaultTitle='ReGui',ContainerName='ReGui',DoubleClickThreshold=0.3,
 TooltipOffset=15,IniToSave={'Value'},ClassIgnored={'Visible','Text'},Container=
 nil,Prefabs=nil,FocusedWindow=nil,HasTouchScreen=false,Services=nil,Elements={},
