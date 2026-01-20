@@ -25,7 +25,7 @@ local Ui = {
         ["Desktop"] = UDim2.fromOffset(600, 400),
     },
     BaseConfig = {
-        Theme = "SigmaSpy",
+        Theme = "Syntax",
         NoScroll = true,
     },
     OptionTypes = {
