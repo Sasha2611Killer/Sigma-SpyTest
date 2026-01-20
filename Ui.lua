@@ -119,7 +119,7 @@ function Ui:Init(Data)
     if not Config then error("Config module not loaded") end
 
     --// Load ReGui with fallback
-    local repoUrl = "http://c1.play2go.cloud:22023/raw/Sigma-Spy"
+    local repoUrl = "https://raw.githubusercontent.com/Sasha2611Killer/Sigma-SpyTest/main"
     if Data.Configuration and Data.Configuration.RepoUrl then
         repoUrl = Data.Configuration.RepoUrl
     end
@@ -128,9 +128,7 @@ function Ui:Init(Data)
     
     --// Try multiple sources for ReGui
     local reGuiSources = {
-        repoUrl .. "/lib/ReGui.lua",
-        "https://raw.githubusercontent.com/depthso/Sigma-Spy/main/src/lib/ReGui.lua",
-        "https://raw.githubusercontent.com/0xfinder/Sigma-Spy/main/src/lib/ReGui.lua"
+        repoUrl .. "/Regui.lua",
     }
     
     for _, source in ipairs(reGuiSources) do
