@@ -214,64 +214,31 @@ end
 function Ui:LoadReGui()
     if not ReGui then return end
     
-    -- Создаем полную тему SigmaSpy
-    local fullTheme = {
-        Values = {
-            AnimationTweenInfo = TweenInfo.new(0.08),
-            TextFont = TextFont,
-            TextSize = 14,
-            Text = Color3.fromRGB(255, 255, 255),
-            TextDisabled = Color3.fromRGB(128, 128, 128),
-            ErrorText = Color3.fromRGB(255, 69, 69),
-            FrameBg = Color3.fromRGB(30, 66, 115),
-            FrameBgTransparency = 0.4,
-            FrameBgActive = Color3.fromRGB(50, 150, 250),
-            FrameBgTransparencyActive = 0.4,
-            FrameRounding = UDim.new(0, 0),
-            SliderGrab = Color3.fromRGB(50, 150, 250),
-            ButtonsBg = Color3.fromRGB(50, 150, 250),
-            CollapsingHeaderBg = Color3.fromRGB(50, 150, 250),
-            CollapsingHeaderText = Color3.fromRGB(240, 240, 240),
-            CheckMark = Color3.fromRGB(50, 150, 250),
-            ResizeGrab = Color3.fromRGB(50, 150, 250),
-            HeaderBg = Color3.fromRGB(172, 171, 175),
-            HeaderBgTransparency = 0.7,
-            HistogramBar = Color3.fromRGB(230, 180, 0),
-            ProgressBar = Color3.fromRGB(230, 180, 0),
-            RegionBg = Color3.fromRGB(30, 66, 115),
-            RegionBgTransparency = 0.1,
-            Separator = Color3.fromRGB(172, 171, 175),
-            SeparatorTransparency = 0.5,
-            ConsoleLineNumbers = Color3.fromRGB(240, 240, 240),
-            MenuBar = Color3.fromRGB(28, 39, 53),
-            MenuBarTransparency = 0.1,
-            PopupCanvas = Color3.fromRGB(15, 19, 24),
-            TabText = Color3.fromRGB(172, 171, 175),
-            TabBg = Color3.fromRGB(30, 66, 115),
-            TabTextActive = Color3.fromRGB(240, 240, 240),
-            TabBgActive = Color3.fromRGB(50, 150, 250),
-            TabsBarBg = Color3.fromRGB(36, 36, 36),
-            TabsBarBgTransparency = 1,
-            ModalWindowDimBg = Color3.fromRGB(230, 230, 230),
-            ModalWindowDimTweenInfo = TweenInfo.new(0.2),
-            WindowBg = Color3.fromRGB(15, 19, 24),
-            WindowBgTransparency = 0.05,
-            Border = Color3.fromRGB(172, 171, 175),
-            BorderTransparency = 0.8,
-            BorderTransparencyActive = 0.5,
-            Title = Color3.fromRGB(240, 240, 240),
-            TitleAlign = Enum.TextXAlignment.Left,
-            TitleBarBg = Color3.fromRGB(15, 19, 24),
-            TitleBarTransparency = 0,
-            TitleActive = Color3.fromRGB(240, 240, 240),
-            TitleBarBgActive = Color3.fromRGB(30, 66, 115),
-            TitleBarTransparencyActive = 0.05,
-            TitleBarBgCollapsed = Color3.fromRGB(0, 0, 0),
-            TitleBarTransparencyCollapsed = 0.6
+    -- Проверяем наличие ThemeConfig
+    if Config and Config.ThemeConfig then
+        -- Убедимся, что ThemeConfig содержит необходимые значения
+        if type(Config.ThemeConfig) ~= "table" then
+            Config.ThemeConfig = {}
+        end
+        
+        Config.ThemeConfig.TextFont = TextFont
+        
+        -- Определяем тему с базовыми значениями по умолчанию
+        ReGui:DefineTheme("SigmaSpy", Config.ThemeConfig)
+    else
+        -- Если ThemeConfig не существует, создаем базовую тему
+        local defaultTheme = {
+            Values = {
+                TextFont = TextFont,
+                Text = Color3.fromRGB(255, 255, 255),
+                TextDisabled = Color3.fromRGB(128, 128, 128),
+                WindowBg = Color3.fromRGB(15, 15, 15),
+                Border = Color3.fromRGB(60, 60, 60),
+                -- Добавьте другие необходимые цвета...
+            }
         }
-    }
-    
-    ReGui:DefineTheme("SigmaSpy", fullTheme)
+        ReGui:DefineTheme("SigmaSpy", defaultTheme)
+    end
 end
 
 type CreateButtons = {
@@ -645,44 +612,18 @@ local function MakeActiveDataCallback(Name: string)
 end
 
 function Ui:MakeEditorTab(InfoSelector)
-    -- Генерируем код с актуальным хукингом
-    local hookCode = self:GenerateHookCode()
+    local Default = self.DefaultEditorContent
     local SyntaxColors = Config and Config.SyntaxColors or {}
-    
-    if not SyntaxColors or #SyntaxColors == 0 then
-        SyntaxColors = {
-            Text = Color3.fromRGB(204, 204, 204),
-            Background = Color3.fromRGB(20, 20, 20),
-            Selection = Color3.fromRGB(255, 255, 255),
-            SelectionBack = Color3.fromRGB(102, 161, 255),
-            Operator = Color3.fromRGB(204, 204, 204),
-            Number = Color3.fromRGB(255, 198, 0),
-            String = Color3.fromRGB(172, 240, 148),
-            Comment = Color3.fromRGB(102, 102, 102),
-            Keyword = Color3.fromRGB(248, 109, 124),
-            BuiltIn = Color3.fromRGB(132, 214, 247),
-            LocalMethod = Color3.fromRGB(253, 251, 172),
-            LocalProperty = Color3.fromRGB(97, 161, 241),
-            Nil = Color3.fromRGB(255, 198, 0),
-            Bool = Color3.fromRGB(255, 198, 0),
-            Function = Color3.fromRGB(248, 109, 124),
-            Local = Color3.fromRGB(248, 109, 124),
-            Self = Color3.fromRGB(248, 109, 124),
-            FunctionName = Color3.fromRGB(253, 251, 172),
-            Bracket = Color3.fromRGB(204, 204, 204)
-        }
-    end
 
     local EditorTab = InfoSelector:CreateTab({Name = "Editor"})
 
-    -- Создаем CodeEditor с реальным кодом
     local CodeEditor = EditorTab:CodeEditor({
         Fill = true,
         Editable = true,
         FontSize = 13,
         Colors = SyntaxColors,
         FontFace = TextFont,
-        Text = hookCode  -- Используем сгенерированный код хуков
+        Text = Default
     })
 
     local ButtonsRow = EditorTab:Row()
@@ -694,44 +635,24 @@ function Ui:MakeEditorTab(InfoSelector)
                 Callback = function()
                     local Script = CodeEditor:GetText()
                     self:SetClipboard(Script)
-                    self:ShowModal({"Code copied to clipboard!"})
                 end
             },
             {
                 Text = "Run",
                 Callback = function()
                     local Script = CodeEditor:GetText()
-                    local Func, Error = loadstring(Script, "SigmaSpy-HookCode")
+                    local Func, Error = loadstring(Script, "SigmaSpy-USERSCRIPT")
                     if not Func then
                         self:ShowModal({"Error:", Error})
                         return
                     end
-                    
-                    local success, result = pcall(Func)
-                    if success then
-                        self:ShowModal({"Hook code executed successfully!"})
-                        if result then
-                            print("Hook initialization result:", result)
-                        end
-                    else
-                        self:ShowModal({"Execution error:", result})
-                    end
-                end
-            },
-            {
-                Text = "Refresh",
-                Callback = function()
-                    -- Обновляем код с актуальным состоянием
-                    local newCode = self:GenerateHookCode()
-                    CodeEditor:SetText(newCode)
-                    self:ShowModal({"Code refreshed!"})
+                    Func()
                 end
             },
         }
     })
     
     self.CodeEditor = CodeEditor
-    return EditorTab
 end
 
 function Ui:ShouldFocus(Tab): boolean
